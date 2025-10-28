@@ -18,10 +18,12 @@ class GoogleLoginController extends Controller
      */
     public function redirectToGoogle(): RedirectResponse
     {
-        Log::info('Web login: Redirecting to Google...');
-        // Use 'google' driver defined in config/services.php
-        // This uses web sessions
-        return Socialite::driver('google')->redirect();
+        Log::info('Web login: Redirecting to Google with prompt=select_account...');
+
+        // Add ->with(["prompt" => "select_account"]) to force account selection
+        return Socialite::driver('google')
+            ->with(["prompt" => "select_account"])
+            ->redirect();
     }
 
     /**
@@ -65,7 +67,7 @@ class GoogleLoginController extends Controller
             return redirect()->route('welcome'); // Redirect to the main welcome page
 
         } catch (\Exception $e) {
-            Log::error('Google Web Login Failed: '.$e->getMessage());
+            Log::error('Google Web Login Failed: ' . $e->getMessage());
             return redirect()->route('welcome')->with('error', 'Login failed. Please try again.');
         }
     }

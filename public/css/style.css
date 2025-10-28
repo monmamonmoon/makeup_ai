@@ -661,3 +661,78 @@
 .modal-overlay { /* ... */ }
 .modal-content { /* ... */ }
 /* ... (all other .modal- styles) ... */
+
+
+
+/* Pop-up confirmation styles */
+/* --- MODAL STYLES (Add or verify in style.css) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 1rem;
+}
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+/* New style for smaller modal */
+.modal-small {
+    max-width: 400px; 
+}
+.modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #9ca3af; /* gray-400 */
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.modal-close:hover { color: #1f2937; }
+.modal-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+.modal-text { margin-bottom: 1.5rem; color: #4b5563; }
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 0.75rem;
+}
+/* Re-use button styles */
+.button {
+    display: inline-block;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem; /* Slightly smaller padding */
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    border: none; /* Ensure buttons don't have default borders */
+}
+.button-pink {
+    background-color: #E91E63;
+    color: white;
+}
+.button-pink:hover { background-color: #c2185b; }
+.button-grey {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+.button-grey:hover { background-color: #d1d5db; }
+
+/* ... (Other modal styles like spinner, image container...) ... */

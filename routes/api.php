@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MakeupController;
+use App\Http\Controllers\Api\VirtualTryOnController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +18,12 @@ use App\Http\Controllers\Api\MakeupController;
 Route::post('/analyze', [MakeupController::class, 'analyze'])->name('api.analyze');
 // --- END TEMPORARY CHANGE ---
 
+Route::middleware('auth:web')->post('/virtual-tryon', [VirtualTryOnController::class, 'tryOn']);
+
 
 // Use 'auth:web' middleware for web session authentication
 Route::middleware('auth:web')->group(function () {
-    
+
     // --- ADD THIS NEW ROUTE FOR VIRTUAL TRY-ON ---
     // This route will require the user to be logged in
     Route::post('/virtual-tryon', [MakeupController::class, 'virtualTryOn'])->name('api.tryon');
@@ -35,3 +38,5 @@ Route::middleware('auth:web')->group(function () {
 //     Route::get('/user', [AuthController::class, 'user']);
 //     Route::post('/logout', [AuthController::class, 'logout']);
 // });
+
+
