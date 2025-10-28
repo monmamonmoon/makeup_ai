@@ -2,28 +2,30 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-// No need for Api\AuthController here unless used for other API endpoints later
-// use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MakeupController;
 
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| Here is where you can register API routes for your application.
 |--------------------------------------------------------------------------
 */
 
 // --- TEMPORARILY MAKE /analyze PUBLIC ---
-// This route is now accessible without login for testing purposes.
+// This route is accessible without login for testing purposes.
 Route::post('/analyze', [MakeupController::class, 'analyze'])->name('api.analyze');
 // --- END TEMPORARY CHANGE ---
 
 
-// Use 'auth:web' middleware for web session authentication for other routes later
+// Use 'auth:web' middleware for web session authentication
 Route::middleware('auth:web')->group(function () {
+    
+    // --- ADD THIS NEW ROUTE FOR VIRTUAL TRY-ON ---
+    // This route will require the user to be logged in
+    Route::post('/virtual-tryon', [MakeupController::class, 'virtualTryOn'])->name('api.tryon');
+    // --- END ADD ---
+
     // Add other API routes that require web login here (e.g., save look)
     // Route::post('/save-look', [SavedLookController::class, 'store'])->name('api.save-look');
 });

@@ -10,7 +10,7 @@
 
     {{-- Analysis Form --}}
     <form id="analysis-form" class="analysis-form" onsubmit="return false;">
-        {{-- No CSRF needed here when submitting via JS Fetch to a public API route --}}
+        {{-- No CSRF needed here when submitting via JS Fetch with X-CSRF-TOKEN header --}}
 
         {{-- Step 1 Card --}}
         <div class="step-card">
@@ -46,6 +46,7 @@
                     <input type="file" id="face-image" name="image" accept="image/*" required style="display: none;">
                     <span id="file-name" class="file-name">No file chosen</span>
                  </div>
+                 {{-- Image Preview Container --}}
                  <div class="image-preview-container">
                       <img id="image-preview" src="#" alt="Image Preview" class="image-preview" style="display: none;"/>
                  </div>
@@ -75,7 +76,7 @@
         const analyzeButton = document.getElementById('analyze-button');
         const loadingSpinner = document.getElementById('loading-spinner');
         const errorDisplay = document.getElementById('form-error');
-        const imagePreview = document.getElementById('image-preview');
+        const imagePreview = document.getElementById('image-preview'); // Get the img tag
         let selectedFile = null;
 
         // --- Function to enable/disable analyze button ---
@@ -94,15 +95,29 @@
                 fileNameSpan.textContent = selectedFile.name;
                 fileNameSpan.style.fontStyle = 'normal';
                 fileNameSpan.style.color = '#1f2937';
+
+                // --- Image Preview Logic ---
                 const reader = new FileReader();
-                reader.onload = function(e) { if (imagePreview) { imagePreview.src = e.target.result; imagePreview.style.display = 'block'; } }
-                reader.readAsDataURL(selectedFile);
+                reader.onload = function(e) {
+                    if (imagePreview) { // Check if element exists
+                        imagePreview.src = e.target.result; // Set src to the loaded file data (Data URL)
+                        imagePreview.style.display = 'block'; // Make it visible
+                    }
+                }
+                reader.readAsDataURL(selectedFile); // Read file as Data URL
+                // --- End Preview Logic ---
+
             } else {
                 selectedFile = null;
                 fileNameSpan.textContent = 'No file chosen';
                 fileNameSpan.style.fontStyle = 'italic';
                 fileNameSpan.style.color = '#6b7280';
-                 if (imagePreview) { imagePreview.src = '#'; imagePreview.style.display = 'none'; }
+                 // --- Hide Preview ---
+                 if (imagePreview) {
+                     imagePreview.src = '#'; // Reset src
+                     imagePreview.style.display = 'none'; // Hide it
+                 }
+                // --- End Hide Preview ---
             }
             checkFormValidity();
         });
@@ -125,7 +140,17 @@
             formData.append('image', selectedFile);
 
             // --- Get CSRF token (needed for web session protection) ---
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfTokenElement ? csrfTokenElement.getAttribute('content') : null;
+
+            if (!csrfToken) {
+                 errorDisplay.textContent = 'Security token missing. Please refresh the page.';
+                 errorDisplay.style.display = 'block';
+                 analyzeButton.style.display = 'inline-block';
+                 loadingSpinner.style.display = 'none';
+                 return;
+            }
+
 
             try {
                 console.log('Sending data (using web session auth)...');
@@ -134,7 +159,6 @@
                     headers: {
                         'Accept': 'application/json',
                         'X-CSRF-TOKEN': csrfToken // Send CSRF token for web routes
-                        // No Authorization header needed when using web auth middleware
                     },
                     body: formData
                 });
@@ -144,10 +168,20 @@
 
                 if (response.ok) {
                     console.log('Analysis Success:', data);
+
+                    // --- Store Image Data URL ---
+                    const imagePreviewSrc = imagePreview?.src;
+                    if (imagePreviewSrc && imagePreviewSrc !== '#') {
+                         sessionStorage.setItem('analysisImage', imagePreviewSrc); // Store the image
+                    }
+                    // --- End Store Image ---
+
                     // Store results in sessionStorage to pass to next page
-                    sessionStorage.setItem('analysisResult', JSON.stringify(data));
-                    // Redirect to a results page (using saved-looks for now)
+                    sessionStorage.setItem('analysisResult', JSON.stringify(data)); // Store the JSON results
+
+                    // Redirect to results page
                      window.location.href = "{{ route('saved-looks') }}";
+
                 } else {
                     // Check specifically for 401/403 which likely means not logged in
                     if (response.status === 401 || response.status === 403) {
@@ -163,8 +197,8 @@
                 errorDisplay.style.display = 'block';
             } finally {
                 // --- Hide Loading ---
-                analyzeButton.style.display = 'inline-block';
-                loadingSpinner.style.display = 'none';
+                 if(document.getElementById('analyze-button')) analyzeButton.style.display = 'inline-block';
+                 if(document.getElementById('loading-spinner')) loadingSpinner.style.display = 'none';
             }
         });
     });
