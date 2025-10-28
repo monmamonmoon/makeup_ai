@@ -1,0 +1,412 @@
+
+/* You should move these styles to public/css/style.css */
+.navbar {
+    background-color: #ffffff; /* White background */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* Shadow */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 4rem; /* h-16 */
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* space-x-2 */
+    color: #E91E63; /* brand-pink */
+    text-decoration: none;
+}
+
+.navbar-brand span {
+    font-weight: 600; /* font-semibold */
+    font-size: 1.125rem; /* text-lg */
+    color: #1f2937; /* text-gray-800 */
+}
+
+.navbar-brand i {
+    font-size: 1.25rem; /* text-xl */
+}
+
+/* Hide links on small screens by default - adjust breakpoint as needed */
+.navbar-links {
+    display: none; /* Hidden on mobile */
+    align-items: center;
+    gap: 1rem; /* space-x-4 */
+}
+.welcome-page{
+    text-align: center;
+}
+/* Show links on medium screens and up */
+@media (min-width: 640px) { /* sm breakpoint */
+    .navbar-links {
+        display: flex;
+    }
+}
+
+
+.nav-link {
+    padding: 0.5rem 0.75rem; /* px-3 py-2 */
+    border-radius: 0.375rem; /* rounded-md */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    color: #6b7280; /* text-gray-500 */
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+    color: #374151; /* hover:text-gray-700 */
+    background-color: #f3f4f6; /* hover:bg-gray-100 */
+}
+
+.nav-link.active {
+    color: #E91E63; /* text-brand-pink */
+    background-color: #FDEEF2; /* bg-brand-light-pink */
+    font-weight: 700; /* font-bold */
+}
+
+.nav-button {
+    margin-left: 1rem; /* ml-4 */
+    padding: 0.5rem 0.75rem; /* px-3 py-2 */
+    border-radius: 0.375rem; /* rounded-md */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    border: 1px solid #E91E63; /* border border-brand-pink */
+    color: #E91E63; /* text-brand-pink */
+    background-color: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem; /* mr-1 */
+    transition: background-color 0.2s;
+}
+
+.nav-button.login:hover,
+.nav-button.logout:hover {
+     background-color: #FDEEF2; /* hover:bg-brand-light-pink */
+}
+
+/* Reset default button styles for logout */
+.nav-button.logout {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+/* You should move these styles to public/css/style.css */
+.footer {
+    text-align: center; /* text-center */
+    padding-top: 1.5rem; /* py-6 */
+    padding-bottom: 1.5rem;
+    font-size: 0.875rem; /* text-sm */
+    color: #6b7280; /* text-gray-500 */
+    margin-top: auto; /* Pushes footer down */
+    border-top: 1px solid #e5e7eb; /* border-t border-gray-200 */
+    background-color: #ffffff; /* bg-white */
+}
+
+.welcome-hero {
+    margin-bottom: 4rem; /* mb-16 */
+}
+.welcome-title {
+    font-size: 2.25rem; /* text-4xl */
+    line-height: 2.5rem;
+    font-weight: 700; /* font-bold */
+    color: #E91E63; /* brand-pink */
+    margin-bottom: 0.75rem; /* mb-3 */
+}
+.welcome-subtitle {
+    font-size: 1.125rem; /* text-lg */
+    line-height: 1.75rem;
+    color: #4b5563; /* text-gray-600 */
+    margin-bottom: 2rem; /* mb-8 */
+    max-width: 42rem; /* max-w-2xl */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Basic Button Styles */
+.button {
+    display: inline-block;
+    font-weight: 700; /* font-bold */
+    padding: 0.75rem 2rem; /* py-3 px-8 */
+    border-radius: 9999px; /* rounded-full */
+    text-decoration: none;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+.button-pink {
+    background-color: #E91E63; /* brand-pink */
+    color: white;
+}
+.button-pink:hover {
+    background-color: #c2185b; /* darker pink */
+}
+.button-arrow i {
+    margin-left: 0.5rem;
+}
+
+.how-it-works {
+    margin-bottom: 4rem; /* mb-16 */
+}
+.section-title {
+    font-size: 1.875rem; /* text-3xl */
+    line-height: 2.25rem;
+    font-weight: 700; /* font-bold */
+    color: #1f2937; /* text-gray-800 */
+    margin-bottom: 2rem; /* mb-8 */
+}
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr)); /* Mobile: 1 column */
+    gap: 2rem; /* gap-8 */
+}
+@media (min-width: 768px) { /* md breakpoint */
+    .feature-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)); /* Desktop: 3 columns */
+    }
+}
+
+.feature-card {
+    background-color: white;
+    padding: 1.5rem; /* p-6 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+    border: 1px solid #e5e7eb; /* border border-gray-200 */
+    text-align: left; /* Align text left within cards */
+}
+.card-icon {
+    font-size: 2.25rem; /* text-3xl roughly */
+    color: #E91E63; /* brand-pink */
+    margin-bottom: 1rem; /* mb-4 */
+}
+.card-title {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 600; /* font-semibold */
+    margin-bottom: 0.5rem; /* mb-2 */
+}
+.card-description {
+    color: #4b5563; /* text-gray-600 */
+    margin-bottom: 1rem; /* mb-4 */
+}
+.card-link {
+    font-weight: 500; /* font-medium */
+    color: #E91E63; /* brand-pink */
+    text-decoration: none;
+}
+.card-link:hover {
+    color: #c2185b; /* darker pink */
+}
+
+.transform-section {
+    background-color: #FDEEF2; /* brand-light-pink */
+    padding: 2rem; /* p-8 */
+    border-radius: 0.75rem; /* rounded-lg */
+}
+.section-title-light {
+     font-size: 1.5rem; /* text-2xl */
+     line-height: 2rem;
+     font-weight: 700; /* font-bold */
+     color: #1f2937; /* text-gray-800 */
+     margin-bottom: 0.75rem; /* mb-3 */
+}
+.transform-section p {
+    color: #374151; /* text-gray-700 */
+    margin-bottom: 1.5rem; /* mb-6 */
+}
+.analysis-page {
+    max-width: 42rem; /* max-w-2xl */
+    margin-left: auto; /* Center the container */
+    margin-right: auto; /* Center the container */
+}
+.analysis-title {
+    font-size: 1.875rem; /* text-3xl */
+    line-height: 2.25rem;
+    font-weight: 700; /* font-bold */
+    margin-bottom: 0.5rem; /* mb-2 */
+}
+.analysis-subtitle {
+    font-size: 1rem; /* text-base */
+    color: #4b5563; /* text-gray-600 */
+    margin-bottom: 1.5rem; /* mb-6 */
+}
+.analysis-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* space-y-6 */
+}
+.step-card {
+    background-color: white;
+    padding: 1.5rem; /* p-6 */
+    border-radius: 0.75rem; /* rounded-lg */
+    border: 1px solid #e5e7eb; /* border border-gray-200 */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow */
+}
+.step-title {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 700; /* font-bold */
+}
+.step-subtitle {
+    font-size: 0.875rem; /* text-sm */
+    color: #6b7280; /* text-gray-500 */
+    margin-bottom: 1.25rem; /* mb-5 */
+}
+.form-group {
+    margin-bottom: 1.25rem; /* mb-5 */
+}
+.form-label {
+    display: block;
+    font-weight: 600; /* font-semibold */
+    margin-bottom: 0.5rem; /* mb-2 */
+    font-size: 0.875rem; /* text-sm */
+}
+.choice-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem; /* space-x-3 */
+}
+.choice-chip {
+    display: inline-flex; /* Use flex to align */
+    align-items: center;
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border: 1px solid #d1d5db; /* border-gray-300 */
+    border-radius: 9999px; /* rounded-full */
+    cursor: pointer;
+    background-color: #f9fafb; /* bg-gray-50 */
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.choice-chip input[type="radio"] {
+    display: none; /* Hide the actual radio button */
+}
+.choice-chip span {
+     margin-left: 0.25rem; /* Add space if needed, depends on styling */
+}
+.choice-chip:has(input[type="radio"]:checked) { /* Style label when radio inside is checked */
+    background-color: #FDEEF2; /* bg-brand-light-pink */
+    border-color: #E91E63; /* border-brand-pink */
+    color: #E91E63; /* text-brand-pink */
+    font-weight: 600;
+}
+.choice-chip:hover {
+    background-color: #f3f4f6; /* bg-gray-100 */
+}
+.choice-chip:has(input[type="radio"]:checked):hover {
+    background-color: #fce4ec; /* Slightly darker pink on hover */
+}
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* space-x-3 */
+}
+.button-grey {
+    background-color: #e5e7eb; /* bg-gray-200 */
+    color: #374151; /* text-gray-700 */
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.button-grey:hover {
+    background-color: #d1d5db; /* bg-gray-300 */
+}
+.file-name {
+    color: #6b7280; /* text-gray-500 */
+    font-style: italic;
+    font-size: 0.875rem;
+}
+
+.button-container {
+    text-align: center;
+    position: relative; /* Needed for spinner positioning */
+    min-height: 48px; /* Ensure space even when button is hidden */
+}
+.button-analyze {
+    padding: 0.75rem 2.5rem; /* py-3 px-10 */
+}
+.button-analyze i {
+    margin-right: 0.5rem;
+}
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Basic Spinner */
+.spinner {
+    border: 4px solid #f3f4f6; /* Light grey */
+    border-top: 4px solid #E91E63; /* Pink */
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+    margin: 12px auto 0 auto; /* Center below button space */
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.form-error {
+    color: #dc2626; /* red-600 */
+    font-size: 0.875rem; /* text-sm */
+    margin-top: 1rem;
+    text-align: center;
+}
+/* Add to style.css */
+.image-preview-container {
+    margin-top: 1rem; /* Add some space above the preview */
+    width: 100%;
+    max-width: 300px; /* Limit preview size */
+    margin-left: auto; /* Center preview if container is wider */
+    margin-right: auto;
+}
+
+.image-preview {
+    display: block; /* Make it a block element */
+    max-width: 100%; /* Ensure image fits container */
+    max-height: 300px; /* Limit height */
+    border: 1px solid #e5e7eb; /* Add a light border */
+    border-radius: 0.5rem; /* Rounded corners */
+    margin-top: 0.5rem; /* Space below file name */
+}
+/* You should move these styles to public/css/style.css */
+.analysis-page { max-width: 42rem; margin-left: auto; margin-right: auto; }
+.analysis-title { font-size: 1.875rem; line-height: 2.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+.analysis-subtitle { font-size: 1rem; color: #4b5563; margin-bottom: 1.5rem; }
+.analysis-form { display: flex; flex-direction: column; gap: 1.5rem; }
+.step-card { background-color: white; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+.step-title { font-size: 1.25rem; font-weight: 700; }
+.step-subtitle { font-size: 0.875rem; color: #6b7280; margin-bottom: 1.25rem; }
+.form-group { margin-bottom: 1.25rem; }
+.form-label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.875rem; }
+.choice-group { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.choice-chip { display: inline-flex; align-items: center; padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 9999px; cursor: pointer; background-color: #f9fafb; transition: background-color 0.2s, border-color 0.2s; }
+.choice-chip input[type="radio"] { display: none; }
+.choice-chip span { margin-left: 0.25rem; }
+.choice-chip:has(input[type="radio"]:checked) { background-color: #FDEEF2; border-color: #E91E63; color: #E91E63; font-weight: 600; }
+.choice-chip:hover { background-color: #f3f4f6; }
+.choice-chip:has(input[type="radio"]:checked):hover { background-color: #fce4ec; }
+.file-input-wrapper { display: flex; align-items: center; gap: 0.75rem; }
+.button-grey { background-color: #e5e7eb; color: #374151; padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 500; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+.button-grey:hover { background-color: #d1d5db; }
+.file-name { color: #6b7280; font-style: italic; font-size: 0.875rem; }
+.image-preview-container { margin-top: 1rem; width: 100%; max-width: 300px; margin-left: auto; margin-right: auto; }
+.image-preview { display: block; max-width: 100%; max-height: 300px; border: 1px solid #e5e7eb; border-radius: 0.5rem; margin-top: 0.5rem; }
+.button-container { text-align: center; position: relative; min-height: 48px; }
+.button-analyze { padding: 0.75rem 2.5rem; }
+.button-analyze i { margin-right: 0.5rem; }
+.button:disabled { opacity: 0.5; cursor: not-allowed; }
+.spinner { border: 4px solid #f3f4f6; border-top: 4px solid #E91E63; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 12px auto 0 auto; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.form-error { color: #dc2626; font-size: 0.875rem; margin-top: 1rem; text-align: center; }
