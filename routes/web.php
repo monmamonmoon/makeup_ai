@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ViewController; // Controller for showing pages
 use App\Http\Controllers\Auth\GoogleLoginController; // Controller for web login/logout
+use App\Http\Controllers\Api\MakeupController; // Controller for API actions
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +23,17 @@ Route::get('/analyze', [ViewController::class, 'analysis'])->name('analyze');
 
 // When a user visits '/saved-looks', show the saved looks page
 // We will add authentication middleware later: ->middleware('auth')
-Route::get('/saved-looks', [ViewController::class, 'savedLooks'])->name('saved-looks');
+// Route::get('/saved-looks', [ViewController::class, 'savedLooks'])->name('saved-looks');
 
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('/saved-looks', [ViewController::class, 'savedLooks'])->name('saved-looks');
+    Route::get('/tutorials', [ViewController::class, 'tutorials'])->name('tutorials');
+
+    Route::post('/virtual-tryon', [MakeupController::class, 'virtualTryOn'])->name('api.tryon');
+
+});
 // When a user visits '/tutorials', show the tutorials page
-Route::get('/tutorials', [ViewController::class, 'tutorials'])->name('tutorials');
+// Route::get('/tutorials', [ViewController::class, 'tutorials'])->name('tutorials');
 
 
 // --- Web Authentication Routes ---
@@ -39,3 +48,4 @@ Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogle
 Route::post('/logout', [GoogleLoginController::class, 'logout'])->name('logout');
 
 // --- TEMPORARY /list-models route REMOVED ---
+

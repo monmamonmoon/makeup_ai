@@ -76,8 +76,9 @@
         const analyzeButton = document.getElementById('analyze-button');
         const loadingSpinner = document.getElementById('loading-spinner');
         const errorDisplay = document.getElementById('form-error');
-        const imagePreview = document.getElementById('image-preview'); // Get the img tag
+        const imagePreview = document.getElementById('image-preview');
         let selectedFile = null;
+        let imagePreviewSrc = null; // --- Store the Data URL in a variable ---
 
         // --- Function to enable/disable analyze button ---
         function checkFormValidity() {
@@ -86,7 +87,7 @@
             const imageSelected = imageInput.files.length > 0;
             analyzeButton.disabled = !(styleSelected && intensitySelected && imageSelected);
         }
-        form.addEventListener('change', checkFormValidity); // Check on any form change
+        form.addEventListener('change', checkFormValidity);
 
         // --- Handle file selection and preview ---
          imageInput.addEventListener('change', function(event) {
@@ -96,28 +97,26 @@
                 fileNameSpan.style.fontStyle = 'normal';
                 fileNameSpan.style.color = '#1f2937';
 
-                // --- Image Preview Logic ---
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    if (imagePreview) { // Check if element exists
-                        imagePreview.src = e.target.result; // Set src to the loaded file data (Data URL)
-                        imagePreview.style.display = 'block'; // Make it visible
+                    if (imagePreview) {
+                        imagePreview.src = e.target.result; // This is the Data URL
+                        imagePreview.style.display = 'block';
+                        imagePreviewSrc = e.target.result; // --- Save the Data URL to our variable ---
                     }
                 }
-                reader.readAsDataURL(selectedFile); // Read file as Data URL
-                // --- End Preview Logic ---
+                reader.readAsDataURL(selectedFile);
 
             } else {
                 selectedFile = null;
                 fileNameSpan.textContent = 'No file chosen';
                 fileNameSpan.style.fontStyle = 'italic';
                 fileNameSpan.style.color = '#6b7280';
-                 // --- Hide Preview ---
                  if (imagePreview) {
-                     imagePreview.src = '#'; // Reset src
-                     imagePreview.style.display = 'none'; // Hide it
+                     imagePreview.src = '#';
+                     imagePreview.style.display = 'none';
                  }
-                // --- End Hide Preview ---
+                 imagePreviewSrc = null; // --- Clear the variable ---
             }
             checkFormValidity();
         });
@@ -127,19 +126,16 @@
             event.preventDefault();
             if (analyzeButton.disabled) return;
 
-            // --- Show Loading ---
             analyzeButton.style.display = 'none';
             loadingSpinner.style.display = 'block';
             errorDisplay.style.display = 'none';
             errorDisplay.textContent = '';
 
-            // --- Prepare form data ---
             const formData = new FormData();
             formData.append('style', styleRadios.value);
             formData.append('intensity', intensityRadios.value);
             formData.append('image', selectedFile);
 
-            // --- Get CSRF token (needed for web session protection) ---
             const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
             const csrfToken = csrfTokenElement ? csrfTokenElement.getAttribute('content') : null;
 
@@ -151,15 +147,10 @@
                  return;
             }
 
-
             try {
-                console.log('Sending data (using web session auth)...');
-                const response = await fetch('/api/analyze', { // Target the API route
+                const response = await fetch('/api/analyze', {
                     method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken // Send CSRF token for web routes
-                    },
+                    headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken },
                     body: formData
                 });
 
@@ -169,34 +160,29 @@
                 if (response.ok) {
                     console.log('Analysis Success:', data);
 
-                    // --- Store Image Data URL ---
-                    const imagePreviewSrc = imagePreview?.src;
-                    if (imagePreviewSrc && imagePreviewSrc !== '#') {
+                    // --- CRITICAL FIX: Store image from our variable ---
+                    if (imagePreviewSrc) {
                          sessionStorage.setItem('analysisImage', imagePreviewSrc); // Store the image
+                         console.log('Image Data URL saved to session storage.');
+                    } else {
+                         console.warn('Image preview source not found, cannot save to session storage.');
                     }
-                    // --- End Store Image ---
+                    // --- END CRITICAL FIX ---
 
-                    // Store results in sessionStorage to pass to next page
                     sessionStorage.setItem('analysisResult', JSON.stringify(data)); // Store the JSON results
-
-                    // Redirect to results page
-                     window.location.href = "{{ route('saved-looks') }}";
+                    window.location.href = "{{ route('saved-looks') }}"; // Redirect
 
                 } else {
-                    // Check specifically for 401/403 which likely means not logged in
                     if (response.status === 401 || response.status === 403) {
                          throw new Error(data.message || 'Authentication required. Please log in.');
                     }
-                    // Handle other errors from Laravel/Gemini
                     throw new Error(data.error || data.details || data.message || `Server error: ${response.status}`);
                 }
-
             } catch (error) {
                 console.error('Analysis submission error:', error);
                 errorDisplay.textContent = `An error occurred: ${error.message}`;
                 errorDisplay.style.display = 'block';
             } finally {
-                // --- Hide Loading ---
                  if(document.getElementById('analyze-button')) analyzeButton.style.display = 'inline-block';
                  if(document.getElementById('loading-spinner')) loadingSpinner.style.display = 'none';
             }
